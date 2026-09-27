@@ -1,0 +1,3 @@
+# คัดลอกไปที่ /etc/sudoers.d/hosting-portal แล้วตรวจด้วย: visudo -cf /etc/sudoers.d/hosting-portal
+# อนุญาตให้เว็บเซิร์ฟเวอร์ (www-data) เรียกเฉพาะสคริปต์ของพอร์ทัลเท่านั้น
+www-data ALL=(root) NOPASSWD: /opt/hosting/create_user.sh, /opt/hosting/delete_user.sh, /opt/hosting/set_quota.sh, /opt/hosting/suspend_user.sh, /opt/hosting/set_password.sh, /opt/hosting/usage_report.sh

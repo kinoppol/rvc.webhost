@@ -1,0 +1,4 @@
+* text=auto
+*.sh text eol=lf
+server-scripts/sudoers-hosting-portal text eol=lf
+*.png binary

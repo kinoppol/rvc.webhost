@@ -1,0 +1,5 @@
+Options -Indexes
+DirectoryIndex index.php
+<FilesMatch "\.(md|lock|sh)$">
+    Require all denied
+</FilesMatch>

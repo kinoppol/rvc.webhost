@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<style>
+body{margin:0;font-family:'IBM Plex Sans Thai',system-ui,sans-serif;color:#1b2433;background:#f3f5f9;-webkit-font-smoothing:antialiased}
+*{box-sizing:border-box}
+a{color:#163a78;text-decoration:none}
+a:hover{color:#0a1f44;text-decoration:underline}
+input,select,button{font-family:inherit}
+</style>
+</helmet>
+
+<div style="min-height:100vh">
+
+<sc-if value="{{ isLanding }}" hint-placeholder-val="{{ true }}">
+<div style="background:#fff">
+  <header style="position:sticky;top:0;z-index:20;background:#0a1f44;border-bottom:1px solid rgba(255,255,255,.08)">
+    <div style="max-width:1200px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+      <div style="display:flex;align-items:center;gap:12px;flex:1;min-width:220px">
+        <img src="uploads/vec_logo.png" alt="โลโก้ สอศ." style="width:44px;height:44px;flex:none">
+        <div style="display:flex;flex-direction:column;line-height:1.25">
+          <span style="color:#fff;font-weight:600;font-size:16px">Student Hosting Portal</span>
+          <span style="color:#9fb3d9;font-size:12px">บริการเว็บโฮสติ้งสำหรับนักศึกษา</span>
+        </div>
+      </div>
+      <nav style="display:flex;gap:24px;font-size:14px">
+        <a href="#features" style="color:#c9d6ee">ฟังก์ชัน</a>
+        <a href="#steps" style="color:#c9d6ee">ขั้นตอน</a>
+        <a href="#specs" style="color:#c9d6ee">สิ่งที่ได้รับ</a>
+      </nav>
+      <div style="display:flex;gap:8px">
+        <button onClick="{{ go.login }}" style="padding:8px 16px;border-radius:6px;border:1px solid rgba(255,255,255,.3);background:transparent;color:#fff;font-size:14px;cursor:pointer;white-space:nowrap" style-hover="background:rgba(255,255,255,.08)">เข้าสู่ระบบ</button>
+        <button onClick="{{ go.signup }}" style="white-space:nowrap;padding:8px 16px;border-radius:6px;border:0;background:#fff;color:#0a1f44;font-weight:600;font-size:14px;cursor:pointer" style-hover="background:#e3eaf7">สมัครใช้งาน</button>
+      </div>
+    </div>
+  </header>
+
+  <section style="background:#0a1f44;background-image:linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);background-size:40px 40px;color:#fff">
+    <div style="max-width:1200px;margin:0 auto;padding:88px 24px 96px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:56px;align-items:center">
+      <div style="display:flex;flex-direction:column;gap:24px">
+        <sc-if value="{{ registrationFull }}" hint-placeholder-val="{{ false }}">
+          <div style="align-self:flex-start;display:flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;background:rgba(220,53,69,.2);color:#ffd0d5;font-size:13px"><i class="bi bi-exclamation-octagon"></i>ขณะนี้ระบบเต็มโควตา ปิดรับสมัครชั่วคราว</div>
+        </sc-if>
+        <sc-if value="{{ registrationOpen }}" hint-placeholder-val="{{ true }}">
+          <div style="align-self:flex-start;display:flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.1);color:#c9d6ee;font-size:13px"><span style="width:8px;height:8px;border-radius:50%;background:#3ddc84"></span>เปิดรับสมัคร · เหลือที่ว่าง {{ seatsLeft }} บัญชี</div>
+        </sc-if>
+        <h1 style="margin:0;font-size:clamp(34px,5vw,52px);line-height:1.2;font-weight:700;text-wrap:balance">พื้นที่เว็บไซต์ของคุณเอง พร้อมใช้ภายในไม่กี่นาที</h1>
+        <p style="margin:0;font-size:18px;line-height:1.7;color:#c9d6ee;max-width:540px;text-wrap:pretty">สมัครด้วยรหัสนักศึกษาและอีเมลสถาบัน ระบบจะสร้างบัญชี SFTP ฐานข้อมูล MariaDB และ URL เว็บไซต์ให้อัตโนมัติ บนเซิร์ฟเวอร์ LAMP ของสถาบัน</p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+          <button onClick="{{ go.signup }}" style="padding:14px 26px;border-radius:8px;border:0;background:#fff;color:#0a1f44;font-weight:600;font-size:16px;cursor:pointer;display:flex;align-items:center;gap:8px" style-hover="background:#e3eaf7">สมัครใช้งาน<i class="bi bi-arrow-right"></i></button>
+          <button onClick="{{ go.login }}" style="padding:14px 26px;border-radius:8px;border:1px solid rgba(255,255,255,.35);background:transparent;color:#fff;font-size:16px;cursor:pointer" style-hover="background:rgba(255,255,255,.08)">เข้าสู่ระบบ</button>
+        </div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#9fb3d9">https://<span style="color:#fff">username</span>.hosting.college.ac.th</div>
+      </div>
+
+      <div style="background:#fff;color:#1b2433;border-radius:12px;box-shadow:0 30px 60px rgba(0,0,0,.35);overflow:hidden">
+        <div style="display:flex;align-items:center;gap:6px;padding:10px 14px;background:#eef1f6;border-bottom:1px solid #dfe4ec">
+          <span style="width:10px;height:10px;border-radius:50%;background:#d3d8e0"></span><span style="width:10px;height:10px;border-radius:50%;background:#d3d8e0"></span><span style="width:10px;height:10px;border-radius:50%;background:#d3d8e0"></span>
+          <span style="margin-left:10px;font-size:12px;color:#5b6577">แดชบอร์ดนักศึกษา</span>
+        </div>
+        <div style="padding:22px;display:flex;flex-direction:column;gap:16px">
+          <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-weight:600">โควตา (Quota)</span><span style="font-size:13px;color:#5b6577">312 / 500 MB</span></div>
+          <div style="height:10px;border-radius:5px;background:#e9edf3;overflow:hidden"><div style="width:62%;height:100%;background:#198754"></div></div>
+          <div style="font-size:12px;color:#5b6577"><i class="bi bi-clock-history"></i> อัปเดตล่าสุดเมื่อ 10:45 น.</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <div style="border:1px solid #dfe4ec;border-radius:8px;padding:12px;display:flex;flex-direction:column;gap:4px"><span style="font-size:12px;color:#5b6577">เว็บไซต์</span><span style="display:flex;align-items:center;gap:6px;font-weight:600;color:#0f5132"><span style="width:8px;height:8px;border-radius:50%;background:#198754"></span>ออนไลน์</span></div>
+            <div style="border:1px solid #dfe4ec;border-radius:8px;padding:12px;display:flex;flex-direction:column;gap:4px"><span style="font-size:12px;color:#5b6577">ฐานข้อมูล</span><span style="display:flex;align-items:center;gap:6px;font-weight:600;color:#0f5132"><span style="width:8px;height:8px;border-radius:50%;background:#198754"></span>พร้อมใช้งาน</span></div>
+          </div>
+          <div style="background:#0a1f44;color:#c9d6ee;border-radius:8px;padding:14px;font-family:'IBM Plex Mono',monospace;font-size:12px;line-height:1.8">
+            <div><span style="color:#8fa6d1">host</span> sftp.hosting.college.ac.th</div>
+            <div><span style="color:#8fa6d1">port</span> 22</div>
+            <div><span style="color:#8fa6d1">user</span> somchai01</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="features" style="max-width:1200px;margin:0 auto;padding:96px 24px 72px">
+    <div style="display:flex;flex-direction:column;gap:12px;max-width:640px;margin-bottom:48px">
+      <span style="font-size:13px;font-weight:600;color:#163a78;letter-spacing:.08em">ฟังก์ชันการใช้งาน</span>
+      <h2 style="margin:0;font-size:36px;line-height:1.3;color:#0a1f44">ทุกอย่างที่ต้องใช้ในการเผยแพร่เว็บไซต์ของนักศึกษา</h2>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:1px;background:#dfe4ec;border:1px solid #dfe4ec;border-radius:12px;overflow:hidden">
+      <div style="background:#fff;padding:32px;display:flex;flex-direction:column;gap:12px"><i class="bi bi-person-plus" style="font-size:28px;color:#163a78"></i><h3 style="margin:0;font-size:18px;color:#0a1f44">สมัครด้วยตนเอง (Self-Service)</h3><p style="margin:0;color:#5b6577;line-height:1.7;font-size:15px">กรอกข้อมูลนักศึกษา ตรวจสอบ username แบบทันที และยืนยันตัวตนผ่านอีเมลสถาบัน</p></div>
+      <div style="background:#fff;padding:32px;display:flex;flex-direction:column;gap:12px"><i class="bi bi-cpu" style="font-size:28px;color:#163a78"></i><h3 style="margin:0;font-size:18px;color:#0a1f44">สร้างบัญชีอัตโนมัติ (Provisioning)</h3><p style="margin:0;color:#5b6577;line-height:1.7;font-size:15px">ระบบสร้างบัญชี Linux, ฐานข้อมูล MariaDB และ Subdomain ให้ทันทีหลังยืนยันอีเมล</p></div>
+      <div style="background:#fff;padding:32px;display:flex;flex-direction:column;gap:12px"><i class="bi bi-pie-chart" style="font-size:28px;color:#163a78"></i><h3 style="margin:0;font-size:18px;color:#0a1f44">ติดตามโควตา (Quota)</h3><p style="margin:0;color:#5b6577;line-height:1.7;font-size:15px">ดูพื้นที่ที่ใช้ไปเทียบกับโควตาทั้งหมด พร้อมเวลาอัปเดตล่าสุดทุก 15 นาที</p></div>
+      <div style="background:#fff;padding:32px;display:flex;flex-direction:column;gap:12px"><i class="bi bi-hdd-network" style="font-size:28px;color:#163a78"></i><h3 style="margin:0;font-size:18px;color:#0a1f44">อัปโหลดไฟล์ผ่าน SFTP</h3><p style="margin:0;color:#5b6577;line-height:1.7;font-size:15px">ข้อมูลเชื่อมต่อ FileZilla ครบถ้วน คัดลอกหรือดาวน์โหลดเก็บไว้ได้ พร้อมคู่มือ</p></div>
+      <div style="background:#fff;padding:32px;display:flex;flex-direction:column;gap:12px"><i class="bi bi-database" style="font-size:28px;color:#163a78"></i><h3 style="margin:0;font-size:18px;color:#0a1f44">ฐานข้อมูล MariaDB</h3><p style="margin:0;color:#5b6577;line-height:1.7;font-size:15px">ได้รับฐานข้อมูลส่วนตัว 1 ชุด เปลี่ยนรหัสผ่านฐานข้อมูลได้เองจากหน้าตั้งค่า</p></div>
+      <div style="background:#fff;padding:32px;display:flex;flex-direction:column;gap:12px"><i class="bi bi-shield-check" style="font-size:28px;color:#163a78"></i><h3 style="margin:0;font-size:18px;color:#0a1f44">แผงควบคุมผู้ดูแลระบบ</h3><p style="margin:0;color:#5b6577;line-height:1.7;font-size:15px">อาจารย์และเจ้าหน้าที่อนุมัติ ระงับ ปรับโควตา และดูภาพรวมทรัพยากรทั้งเซิร์ฟเวอร์</p></div>
+    </div>
+  </section>
+
+  <section id="steps" style="background:#f3f5f9">
+    <div style="max-width:1200px;margin:0 auto;padding:88px 24px">
+      <h2 style="margin:0 0 48px;font-size:36px;color:#0a1f44">เริ่มใช้งานใน 4 ขั้นตอน</h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:32px">
+        <div style="display:flex;flex-direction:column;gap:12px;border-top:3px solid #0a1f44;padding-top:20px"><span style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#163a78">01</span><h3 style="margin:0;font-size:18px">กรอกแบบฟอร์ม</h3><p style="margin:0;color:#5b6577;line-height:1.7;font-size:15px">ชื่อ-นามสกุล รหัสนักศึกษา อีเมลสถาบัน และ username ที่ต้องการ</p></div>
+        <div style="display:flex;flex-direction:column;gap:12px;border-top:3px solid #0a1f44;padding-top:20px"><span style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#163a78">02</span><h3 style="margin:0;font-size:18px">ยืนยันอีเมล</h3><p style="margin:0;color:#5b6577;line-height:1.7;font-size:15px">กรอกรหัส OTP 6 หลักที่ส่งไปยังอีเมลสถาบันของคุณ</p></div>
+        <div style="display:flex;flex-direction:column;gap:12px;border-top:3px solid #0a1f44;padding-top:20px"><span style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#163a78">03</span><h3 style="margin:0;font-size:18px">ระบบสร้างบัญชี</h3><p style="margin:0;color:#5b6577;line-height:1.7;font-size:15px">บัญชี SFTP ฐานข้อมูล และ URL เว็บไซต์ ถูกสร้างบนเซิร์ฟเวอร์จริง</p></div>
+        <div style="display:flex;flex-direction:column;gap:12px;border-top:3px solid #0a1f44;padding-top:20px"><span style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#163a78">04</span><h3 style="margin:0;font-size:18px">อัปโหลดเว็บไซต์</h3><p style="margin:0;color:#5b6577;line-height:1.7;font-size:15px">เชื่อมต่อด้วย FileZilla แล้วอัปโหลดไฟล์ไปที่โฟลเดอร์ public_html</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="specs" style="max-width:1200px;margin:0 auto;padding:88px 24px">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:48px;align-items:start">
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <h2 style="margin:0;font-size:36px;line-height:1.3;color:#0a1f44">สิ่งที่นักศึกษาได้รับต่อ 1 บัญชี</h2>
+        <p style="margin:0;color:#5b6577;line-height:1.7;font-size:16px">ทรัพยากรทั้งหมดผูกกับ username เดียวกัน และเปลี่ยน username ไม่ได้หลังยืนยันตัวตนแล้ว</p>
+      </div>
+      <div style="display:flex;flex-direction:column;border:1px solid #dfe4ec;border-radius:12px;overflow:hidden">
+        <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px 16px;padding:18px 22px;border-bottom:1px solid #dfe4ec"><span style="color:#5b6577">พื้นที่เว็บ (Disk Quota)</span><strong>500 MB</strong></div>
+        <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px 16px;padding:18px 22px;border-bottom:1px solid #dfe4ec"><span style="color:#5b6577">ฐานข้อมูล MariaDB</span><strong>1 ฐานข้อมูล</strong></div>
+        <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px 16px;padding:18px 22px;border-bottom:1px solid #dfe4ec"><span style="color:#5b6577">การเชื่อมต่อไฟล์</span><strong>SSH / SFTP</strong></div>
+        <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px 16px;padding:18px 22px;border-bottom:1px solid #dfe4ec"><span style="color:#5b6577">รองรับภาษา</span><strong>PHP, HTML, CSS, JS</strong></div>
+        <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px 16px;padding:18px 22px"><span style="color:#5b6577">URL เว็บไซต์</span><strong style="font-family:'IBM Plex Mono',monospace;font-size:14px">username.hosting.college.ac.th</strong></div>
+      </div>
+    </div>
+  </section>
+
+  <section style="background:#0a1f44;color:#fff">
+    <div style="max-width:1200px;margin:0 auto;padding:72px 24px;display:flex;flex-wrap:wrap;gap:24px;align-items:center;justify-content:space-between">
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <h2 style="margin:0;font-size:30px">พร้อมเริ่มสร้างเว็บไซต์แรกแล้วหรือยัง</h2>
+        <p style="margin:0;color:#c9d6ee">ใช้เวลาสมัครไม่เกิน 3 นาที</p>
+      </div>
+      <button onClick="{{ go.signup }}" style="padding:14px 28px;border-radius:8px;border:0;background:#fff;color:#0a1f44;font-weight:600;font-size:16px;cursor:pointer" style-hover="background:#e3eaf7">สมัครใช้งาน</button>
+    </div>
+    <div style="border-top:1px solid rgba(255,255,255,.1)">
+      <div style="max-width:1200px;margin:0 auto;padding:20px 24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;font-size:13px;color:#9fb3d9">
+        <span style="display:flex;align-items:center;gap:10px"><img src="uploads/vec_logo.png" alt="" style="width:28px;height:28px">© 2569 Student Hosting Portal · ศูนย์เทคโนโลยีสารสนเทศ</span>
+        <span>ให้บริการบน TurnKey GNU/Linux LAMP Stack</span>
+      </div>
+    </div>
+  </section>
+</div>
+</sc-if>
+
+<sc-if value="{{ isPublic }}" hint-placeholder-val="{{ false }}">
+<div style="min-height:100vh;display:flex;flex-direction:column;background:#f3f5f9">
+  <header style="background:#0a1f44">
+    <div style="max-width:1100px;margin:0 auto;padding:10px 24px;display:flex;align-items:center;gap:12px">
+      <button onClick="{{ go.landing }}" style="display:flex;align-items:center;gap:12px;background:none;border:0;padding:0;cursor:pointer">
+        <img src="uploads/vec_logo.png" alt="โลโก้ สอศ." style="width:38px;height:38px">
+        <span style="color:#fff;font-weight:600;font-size:15px">Student Hosting Portal</span>
+      </button>
+      <span style="flex:1"></span>
+      <button onClick="{{ go.landing }}" style="background:none;border:0;color:#c9d6ee;font-size:14px;cursor:pointer;display:flex;gap:6px;align-items:center"><i class="bi bi-arrow-left"></i>กลับหน้าแรก</button>
+    </div>
+  </header>
+
+  <main style="flex:1;display:flex;justify-content:center;padding:48px 16px">
+    <div style="width:100%;max-width:560px;display:flex;flex-direction:column;gap:24px">
+      <sc-if value="{{ showStepper }}" hint-placeholder-val="{{ false }}">
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+          <sc-for list="{{ steps }}" as="s" hint-placeholder-count="3">
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div style="height:4px;border-radius:2px;background:{{ s.bar }}"></div>
+              <span style="font-size:13px;color:{{ s.fg }};font-weight:600">{{ s.label }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isSignup }}" hint-placeholder-val="{{ false }}">
+        <div style="background:#fff;border-radius:10px;box-shadow:0 1px 3px rgba(10,31,68,.08);border:1px solid #dfe4ec">
+          <div style="padding:20px 24px;border-bottom:1px solid #dfe4ec">
+            <h1 style="margin:0;font-size:22px;color:#0a1f44">สมัครใช้งานเว็บโฮสติ้ง</h1>
+            <p style="margin:6px 0 0;color:#5b6577;font-size:14px">กรอกข้อมูลให้ตรงกับทะเบียนนักศึกษา</p>
+          </div>
+          <sc-if value="{{ registrationFull }}" hint-placeholder-val="{{ false }}">
+            <div style="padding:40px 24px;display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center">
+              <i class="bi bi-hdd-stack" style="font-size:40px;color:#dc3545"></i>
+              <h2 style="margin:0;font-size:20px">เต็มโควตา ไม่รับสมัครเพิ่ม</h2>
+              <p style="margin:0;color:#5b6577;line-height:1.7;max-width:380px">ขณะนี้มีผู้ใช้ครบ 300 บัญชีตามขีดจำกัดของเซิร์ฟเวอร์ กรุณาติดต่อเจ้าหน้าที่ศูนย์คอมพิวเตอร์ หรือกลับมาใหม่เมื่อเปิดรับรอบถัดไป</p>
+              <button onClick="{{ go.landing }}" style="margin-top:6px;padding:10px 20px;border-radius:6px;border:1px solid #dfe4ec;background:#fff;cursor:pointer">กลับหน้าแรก</button>
+            </div>
+          </sc-if>
+          <sc-if value="{{ registrationOpen }}" hint-placeholder-val="{{ true }}">
+            <div style="padding:24px;display:flex;flex-direction:column;gap:18px">
+              <label style="display:flex;flex-direction:column;gap:6px;font-size:14px;font-weight:500">ชื่อ-นามสกุล
+                <input value="{{ form.fullName }}" onChange="{{ on.fullName }}" placeholder="เช่น สมชาย ใจดี" style="padding:10px 12px;border:1px solid #ced4da;border-radius:6px;font-size:15px;font-weight:400" style-focus="outline:none;border-color:#163a78;box-shadow:0 0 0 3px rgba(22,58,120,.15)">
+              </label>
+              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px">
+                <label style="display:flex;flex-direction:column;gap:6px;font-size:14px;font-weight:500">รหัสนักศึกษา
+                  <input value="{{ form.studentId }}" onChange="{{ on.studentId }}" placeholder="เช่น 6621010001" inputMode="numeric" style="padding:10px 12px;border:1px solid #ced4da;border-radius:6px;font-size:15px;font-weight:400;font-family:'IBM Plex Mono',monospace" style-focus="outline:none;border-color:#163a78;box-shadow:0 0 0 3px rgba(22,58,120,.15)">
+                </label>
+                <label style="display:flex;flex-direction:column;gap:6px;font-size:14px;font-weight:500">อีเมลสถาบัน
+                  <input value="{{ form.email }}" onChange="{{ on.email }}" placeholder="name@college.ac.th" style="padding:10px 12px;border:1px solid #ced4da;border-radius:6px;font-size:15px;font-weight:400" style-focus="outline:none;border-color:#163a78;box-shadow:0 0 0 3px rgba(22,58,120,.15)">
+                </label>
+              </div>
+              <label style="display:flex;flex-direction:column;gap:6px;font-size:14px;font-weight:500">Username ที่ต้องการ
+                <div style="display:flex;border:1px solid {{ uCheck.border }};border-radius:6px;overflow:hidden">
+                  <input value="{{ form.username }}" onChange="{{ on.username }}" placeholder="เช่น somchai01" maxLength="16" style="flex:1;min-width:0;padding:10px 12px;border:0;font-size:15px;font-weight:400;font-family:'IBM Plex Mono',monospace;outline:none">
+                  <span style="padding:10px 12px;background:#f3f5f9;color:#5b6577;font-size:13px;font-weight:400;font-family:'IBM Plex Mono',monospace;border-left:1px solid #dfe4ec;white-space:nowrap">.hosting.college.ac.th</span>
+                </div>
+                <span style="display:flex;gap:6px;align-items:center;font-size:13px;font-weight:400;color:{{ uCheck.color }}"><i class="bi {{ uCheck.icon }}"></i>{{ uCheck.msg }}</span>
+              </label>
+              <div style="display:flex;gap:10px;padding:12px 14px;background:#e8eefb;border-radius:6px;font-size:13px;color:#163a78;line-height:1.6">
+                <i class="bi bi-lock"></i><span>username จะใช้เป็นชื่อบัญชี SFTP ฐานข้อมูล และ URL เว็บไซต์ และเปลี่ยนไม่ได้หลังยืนยันตัวตน</span>
+              </div>
+              <label style="display:flex;gap:10px;align-items:flex-start;font-size:14px;line-height:1.6;cursor:pointer">
+                <input type="checkbox" checked="{{ form.agree }}" onChange="{{ on.agree }}" style="margin-top:4px;width:16px;height:16px;accent-color:#0a1f44">
+                <span>ฉันได้อ่านและยอมรับ <a href="#" onClick="{{ openTerms }}">ข้อตกลงการใช้งาน (Terms)</a></span>
+              </label>
+            </div>
+            <div style="padding:16px 24px;border-top:1px solid #dfe4ec;background:#fafbfd;display:flex;justify-content:space-between;align-items:center;gap:12px;border-radius:0 0 10px 10px;flex-wrap:wrap">
+              <button onClick="{{ go.login }}" style="background:none;border:0;color:#163a78;font-size:14px;cursor:pointer">มีบัญชีแล้ว? เข้าสู่ระบบ</button>
+              <button onClick="{{ submitSignup }}" disabled="{{ cannotSubmit }}" style="padding:10px 22px;border-radius:6px;border:0;background:#0a1f44;color:#fff;font-weight:600;font-size:15px;cursor:{{ submitCursor }};opacity:{{ submitOpacity }}">ส่งรหัสยืนยัน</button>
+            </div>
+          </sc-if>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isOtp }}" hint-placeholder-val="{{ false }}">
+        <div style="background:#fff;border-radius:10px;border:1px solid #dfe4ec;box-shadow:0 1px 3px rgba(10,31,68,.08);padding:36px 28px;display:flex;flex-direction:column;align-items:center;gap:18px;text-align:center">
+          <div style="width:64px;height:64px;border-radius:50%;background:#e8eefb;display:grid;place-items:center"><i class="bi bi-envelope-check" style="font-size:28px;color:#0a1f44"></i></div>
+          <h1 style="margin:0;font-size:22px;color:#0a1f44">ยืนยันอีเมลสถาบัน</h1>
+          <p style="margin:0;color:#5b6577;line-height:1.7">กรอกรหัส 6 หลักที่ส่งไปยัง<br><strong style="color:#1b2433">{{ emailShown }}</strong></p>
+          <input value="{{ otp }}" onChange="{{ on.otp }}" maxLength="6" inputMode="numeric" placeholder="000000" style="width:260px;max-width:100%;text-align:center;padding:14px;font-size:30px;letter-spacing:.4em;text-indent:.4em;font-family:'IBM Plex Mono',monospace;border:1px solid #ced4da;border-radius:8px" style-focus="outline:none;border-color:#163a78;box-shadow:0 0 0 3px rgba(22,58,120,.15)">
+          <sc-if value="{{ otpError }}" hint-placeholder-val="{{ false }}"><span style="color:#b02a37;font-size:14px"><i class="bi bi-x-circle"></i> รหัสไม่ถูกต้อง กรุณาลองอีกครั้ง</span></sc-if>
+          <button onClick="{{ verifyOtp }}" disabled="{{ otpIncomplete }}" style="width:260px;max-width:100%;padding:12px;border-radius:6px;border:0;background:#0a1f44;color:#fff;font-weight:600;font-size:15px;cursor:pointer;opacity:{{ otpOpacity }}">ยืนยันและสร้างบัญชี</button>
+          <div style="font-size:14px;color:#5b6577;display:flex;gap:6px;align-items:center">ไม่ได้รับรหัส?
+            <sc-if value="{{ canResend }}" hint-placeholder-val="{{ false }}"><button onClick="{{ resendOtp }}" style="background:none;border:0;padding:0;color:#163a78;font-weight:600;cursor:pointer;font-size:14px">ส่งรหัสใหม่</button></sc-if>
+            <sc-if value="{{ resendWaiting }}" hint-placeholder-val="{{ true }}"><span>ส่งใหม่ได้ใน {{ resendIn }} วินาที</span></sc-if>
+          </div>
+          <span style="font-size:12px;color:#8a93a3">รหัสสำหรับเดโม: 123456</span>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isProvisioning }}" hint-placeholder-val="{{ false }}">
+        <div style="background:#fff;border-radius:10px;border:1px solid #dfe4ec;padding:32px 28px;display:flex;flex-direction:column;gap:16px">
+          <h1 style="margin:0 0 4px;font-size:20px;color:#0a1f44">กำลังสร้างบัญชีบนเซิร์ฟเวอร์…</h1>
+          <sc-for list="{{ provSteps }}" as="p" hint-placeholder-count="4">
+            <div style="display:flex;gap:12px;align-items:center;font-size:15px;color:{{ p.color }}"><i class="bi {{ p.icon }}" style="font-size:18px"></i>{{ p.label }}</div>
+          </sc-for>
+          <span style="font-size:12px;color:#8a93a3">กรุณาอย่าปิดหน้านี้</span>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isSuccess }}" hint-placeholder-val="{{ false }}">
+        <div style="background:#fff;border-radius:10px;border:1px solid #dfe4ec;box-shadow:0 1px 3px rgba(10,31,68,.08)">
+          <div style="padding:28px 24px;display:flex;gap:16px;align-items:center;border-bottom:1px solid #dfe4ec">
+            <div style="width:52px;height:52px;flex:none;border-radius:50%;background:#d1e7dd;display:grid;place-items:center"><i class="bi bi-check-lg" style="font-size:26px;color:#0f5132"></i></div>
+            <div>
+              <h1 style="margin:0;font-size:22px;color:#0a1f44">สมัครสำเร็จ</h1>
+              <p style="margin:4px 0 0;color:#5b6577;font-size:14px">บัญชีของคุณพร้อมใช้งานแล้ว เก็บข้อมูลด้านล่างไว้ให้ดี</p>
+            </div>
+          </div>
+          <div style="padding:8px 24px 16px">
+            <sc-for list="{{ connRowsFull }}" as="r" hint-placeholder-count="9">
+              <div style="display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid #eef1f6">
+                <span style="width:150px;flex:none;font-size:13px;color:#5b6577">{{ r.label }}</span>
+                <span style="flex:1;min-width:0;font-family:'IBM Plex Mono',monospace;font-size:14px;overflow-wrap:anywhere">{{ r.value }}</span>
+                <button onClick="{{ r.onCopy }}" title="คัดลอก" style="flex:none;width:32px;height:32px;border-radius:6px;border:1px solid #dfe4ec;background:#fff;color:#163a78;cursor:pointer"><i class="bi {{ r.copyIcon }}"></i></button>
+              </div>
+            </sc-for>
+          </div>
+          <div style="margin:0 24px 20px;padding:12px 14px;background:#fff3cd;color:#664d03;border-radius:6px;font-size:13px;line-height:1.6;display:flex;gap:10px"><i class="bi bi-exclamation-triangle"></i><span>รหัสผ่านจะแสดงเพียงครั้งเดียว กรุณาดาวน์โหลดหรือคัดลอกเก็บไว้ก่อนออกจากหน้านี้</span></div>
+          <div style="padding:16px 24px;border-top:1px solid #dfe4ec;background:#fafbfd;display:flex;flex-wrap:wrap;gap:10px;border-radius:0 0 10px 10px">
+            <button onClick="{{ downloadTxt }}" style="padding:10px 16px;border-radius:6px;border:1px solid #ced4da;background:#fff;cursor:pointer;display:flex;gap:8px;align-items:center;font-size:14px"><i class="bi bi-filetype-txt"></i>ดาวน์โหลด Text</button>
+            <button onClick="{{ downloadPdf }}" style="padding:10px 16px;border-radius:6px;border:1px solid #ced4da;background:#fff;cursor:pointer;display:flex;gap:8px;align-items:center;font-size:14px"><i class="bi bi-filetype-pdf"></i>ดาวน์โหลด PDF</button>
+            <span style="flex:1"></span>
+            <button onClick="{{ go.student }}" style="padding:10px 20px;border-radius:6px;border:0;background:#0a1f44;color:#fff;font-weight:600;cursor:pointer;font-size:14px">ไปที่แดชบอร์ด</button>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isLogin }}" hint-placeholder-val="{{ false }}">
+        <div style="max-width:420px;width:100%;margin:0 auto;background:#fff;border-radius:10px;border:1px solid #dfe4ec;box-shadow:0 1px 3px rgba(10,31,68,.08)">
+          <div style="padding:28px 28px 4px;display:flex;flex-direction:column;align-items:center;gap:12px">
+            <img src="uploads/vec_logo.png" alt="โลโก้ สอศ." style="width:72px;height:72px">
+            <h1 style="margin:0;font-size:22px;color:#0a1f44">เข้าสู่ระบบ</h1>
+          </div>
+          <div style="margin:16px 28px 0;display:grid;grid-template-columns:1fr 1fr;background:#f3f5f9;border-radius:8px;padding:4px">
+            <button onClick="{{ setRole.student }}" style="padding:8px;border:0;border-radius:6px;cursor:pointer;font-size:14px;background:{{ roleTab.stuBg }};color:{{ roleTab.stuFg }};font-weight:600">นักศึกษา</button>
+            <button onClick="{{ setRole.admin }}" style="padding:8px;border:0;border-radius:6px;cursor:pointer;font-size:14px;background:{{ roleTab.admBg }};color:{{ roleTab.admFg }};font-weight:600">ผู้ดูแลระบบ</button>
+          </div>
+          <div style="padding:20px 28px;display:flex;flex-direction:column;gap:14px">
+            <label style="display:flex;flex-direction:column;gap:6px;font-size:14px;font-weight:500">Username
+              <input value="{{ loginUser }}" onChange="{{ on.loginUser }}" style="padding:10px 12px;border:1px solid #ced4da;border-radius:6px;font-size:15px;font-family:'IBM Plex Mono',monospace" style-focus="outline:none;border-color:#163a78;box-shadow:0 0 0 3px rgba(22,58,120,.15)">
+            </label>
+            <label style="display:flex;flex-direction:column;gap:6px;font-size:14px;font-weight:500">รหัสผ่าน
+              <input type="password" defaultValue="demopass" style="padding:10px 12px;border:1px solid #ced4da;border-radius:6px;font-size:15px" style-focus="outline:none;border-color:#163a78;box-shadow:0 0 0 3px rgba(22,58,120,.15)">
+            </label>
+            <button onClick="{{ doLogin }}" style="padding:12px;border-radius:6px;border:0;background:#0a1f44;color:#fff;font-weight:600;font-size:15px;cursor:pointer" style-hover="background:#163a78">เข้าสู่ระบบ</button>
+            <div style="display:flex;align-items:center;gap:10px;color:#8a93a3;font-size:12px"><span style="flex:1;height:1px;background:#dfe4ec"></span>หรือ<span style="flex:1;height:1px;background:#dfe4ec"></span></div>
+            <button onClick="{{ doLogin }}" style="padding:11px;border-radius:6px;border:1px solid #ced4da;background:#fff;font-size:14px;cursor:pointer;display:flex;justify-content:center;gap:8px;align-items:center"><i class="bi bi-building"></i>เข้าสู่ระบบด้วย SSO ของสถาบัน</button>
+          </div>
+          <div style="padding:14px 28px;border-top:1px solid #dfe4ec;text-align:center">
+            <button onClick="{{ go.signup }}" style="background:none;border:0;color:#163a78;cursor:pointer;font-size:14px">ยังไม่มีบัญชี? สมัครใช้งาน</button>
+          </div>
+        </div>
+      </sc-if>
+    </div>
+  </main>
+</div>
+</sc-if>
+
+<sc-if value="{{ inApp }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;min-height:100vh;background:#f3f5f9">
+  <aside style="width:{{ sidebarW }};flex:none;background:#0a1f44;color:#c9d6ee;display:flex;flex-direction:column;position:sticky;top:0;height:100vh;transition:width .2s;overflow:hidden">
+    <div style="height:60px;display:flex;align-items:center;gap:10px;padding:0 13px;border-bottom:1px solid rgba(255,255,255,.08);white-space:nowrap">
+      <img src="uploads/vec_logo.png" alt="โลโก้ สอศ." style="width:38px;height:38px;flex:none">
+      <span style="color:#fff;font-weight:600;font-size:15px">Hosting Portal</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid rgba(255,255,255,.08);white-space:nowrap">
+      <span style="width:32px;height:32px;flex:none;border-radius:50%;background:#163a78;color:#fff;display:grid;place-items:center;font-size:14px"><i class="bi {{ me.icon }}"></i></span>
+      <div style="display:flex;flex-direction:column;line-height:1.3;min-width:0">
+        <span style="color:#fff;font-size:14px">{{ me.name }}</span>
+        <span style="font-size:12px;color:#9fb3d9">{{ me.roleLabel }}</span>
+      </div>
+    </div>
+    <nav style="padding:10px 8px;display:flex;flex-direction:column;gap:2px;flex:1">
+      <span style="padding:8px 12px 4px;font-size:11px;letter-spacing:.08em;color:#8fa6d1;white-space:nowrap">เมนูหลัก</span>
+      <sc-for list="{{ navItems }}" as="n" hint-placeholder-count="2">
+        <button onClick="{{ n.onClick }}" style="display:flex;align-items:center;gap:12px;padding:10px 12px;border:0;border-radius:6px;background:{{ n.bg }};color:{{ n.fg }};font-size:14px;cursor:pointer;text-align:left;white-space:nowrap" style-hover="color:#fff"><i class="bi {{ n.icon }}" style="font-size:17px;width:20px;flex:none"></i>{{ n.label }}</button>
+      </sc-for>
+    </nav>
+    <div style="padding:12px 8px;border-top:1px solid rgba(255,255,255,.08)">
+      <button onClick="{{ logout }}" style="width:100%;display:flex;align-items:center;gap:12px;padding:10px 12px;border:0;border-radius:6px;background:transparent;color:#c9d6ee;font-size:14px;cursor:pointer;white-space:nowrap" style-hover="background:rgba(255,255,255,.08);color:#fff"><i class="bi bi-box-arrow-left" style="font-size:17px;width:20px;flex:none"></i>ออกจากระบบ</button>
+    </div>
+  </aside>
+
+  <div style="flex:1;min-width:0;display:flex;flex-direction:column">
+    <header style="height:60px;background:#fff;border-bottom:1px solid #dfe4ec;display:flex;align-items:center;gap:12px;padding:0 20px;position:sticky;top:0;z-index:10">
+      <button onClick="{{ toggleSidebar }}" style="width:36px;height:36px;border:0;background:transparent;border-radius:6px;cursor:pointer;font-size:20px;color:#5b6577" style-hover="background:#f3f5f9"><i class="bi bi-list"></i></button>
+      <button onClick="{{ go.landing }}" style="background:none;border:0;color:#5b6577;font-size:14px;cursor:pointer">หน้าแรก</button>
+      <span style="flex:1"></span>
+      <span style="display:flex;align-items:center;gap:6px;font-size:13px;color:#5b6577"><i class="bi bi-arrow-repeat"></i>ซิงก์ข้อมูลล่าสุด {{ lastSync }}</span>
+      <span style="width:1px;height:24px;background:#dfe4ec"></span>
+      <span style="font-size:14px;font-family:'IBM Plex Mono',monospace">{{ me.username }}</span>
+    </header>
+
+    <div style="padding:20px 24px 8px;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px">
+      <h1 style="margin:0;font-size:24px;font-weight:600;color:#0a1f44">{{ pageTitle }}</h1>
+      <span style="font-size:13px;color:#5b6577">{{ me.roleLabel }} / <span style="color:#1b2433">{{ pageTitle }}</span></span>
+    </div>
+
+    <main style="padding:12px 24px 40px;display:flex;flex-direction:column;gap:20px">
+
+      <sc-if value="{{ isStuDash }}" hint-placeholder-val="{{ false }}">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px">
+          <div style="background:{{ stu.boxBg }};color:#fff;border-radius:8px;padding:18px 20px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 1px 3px rgba(0,0,0,.1)">
+            <div><div style="font-size:30px;font-weight:700">{{ stu.pct }}%</div><div style="font-size:14px">ใช้พื้นที่ไปแล้ว</div></div><i class="bi bi-pie-chart-fill" style="font-size:40px;opacity:.35"></i>
+          </div>
+          <div style="background:#0f2b5c;color:#fff;border-radius:8px;padding:18px 20px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 1px 3px rgba(0,0,0,.1)">
+            <div><div style="font-size:30px;font-weight:700">ออนไลน์</div><div style="font-size:14px">สถานะเว็บไซต์</div></div><i class="bi bi-globe2" style="font-size:40px;opacity:.35"></i>
+          </div>
+          <div style="background:#163a78;color:#fff;border-radius:8px;padding:18px 20px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 1px 3px rgba(0,0,0,.1)">
+            <div><div style="font-size:30px;font-weight:700">พร้อมใช้</div><div style="font-size:14px">ฐานข้อมูล MariaDB</div></div><i class="bi bi-database-fill" style="font-size:40px;opacity:.35"></i>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:20px;align-items:start">
+          <div style="background:#fff;border-radius:8px;box-shadow:0 1px 3px rgba(10,31,68,.08);border-top:3px solid #0a1f44">
+            <div style="padding:14px 20px;border-bottom:1px solid #eef1f6;display:flex;justify-content:space-between;align-items:center"><h2 style="margin:0;font-size:16px;font-weight:600">โควตาพื้นที่ (Quota)</h2><span style="padding:3px 10px;border-radius:999px;font-size:12px;font-weight:600;background:{{ stu.st.bg }};color:{{ stu.st.fg }}">{{ stu.st.label }}</span></div>
+            <div style="padding:20px;display:flex;flex-direction:column;gap:14px">
+              <div style="display:flex;align-items:baseline;gap:8px"><span style="font-size:34px;font-weight:700;color:#0a1f44">{{ stu.used }}</span><span style="color:#5b6577">/ {{ stu.soft }} MB</span></div>
+              <div style="height:14px;border-radius:7px;background:#e9edf3;overflow:hidden"><div style="height:100%;width:{{ stu.barW }};background:{{ stu.st.bar }};transition:width .3s"></div></div>
+              <div style="display:flex;justify-content:space-between;font-size:13px;color:#5b6577;flex-wrap:wrap;gap:8px"><span>Soft limit {{ stu.soft }} MB · Hard limit {{ stu.hard }} MB</span><span><i class="bi bi-clock-history"></i> อัปเดตล่าสุดเมื่อ {{ lastSync }}</span></div>
+              <sc-if value="{{ stu.warn }}" hint-placeholder-val="{{ false }}">
+                <div style="padding:12px 14px;border-radius:6px;background:{{ stu.st.bg }};color:{{ stu.st.fg }};font-size:14px;line-height:1.6;display:flex;gap:10px"><i class="bi bi-exclamation-triangle-fill"></i><span>{{ stu.warnMsg }}</span></div>
+              </sc-if>
+              <span style="font-size:12px;color:#8a93a3">ข้อมูลการใช้พื้นที่ซิงก์จากเซิร์ฟเวอร์ทุก 15 นาที</span>
+            </div>
+          </div>
+
+          <div style="background:#fff;border-radius:8px;box-shadow:0 1px 3px rgba(10,31,68,.08);border-top:3px solid #163a78">
+            <div style="padding:14px 20px;border-bottom:1px solid #eef1f6"><h2 style="margin:0;font-size:16px;font-weight:600">ข้อมูลเชื่อมต่อ</h2></div>
+            <div style="padding:4px 20px 12px">
+              <sc-for list="{{ connRowsDash }}" as="r" hint-placeholder-count="7">
+                <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #eef1f6">
+                  <span style="width:130px;flex:none;font-size:13px;color:#5b6577">{{ r.label }}</span>
+                  <span style="flex:1;min-width:0;font-family:'IBM Plex Mono',monospace;font-size:13px;overflow-wrap:anywhere">{{ r.value }}</span>
+                  <button onClick="{{ r.onCopy }}" title="คัดลอก" style="flex:none;width:30px;height:30px;border-radius:6px;border:1px solid #dfe4ec;background:#fff;color:#163a78;cursor:pointer"><i class="bi {{ r.copyIcon }}"></i></button>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+
+        <div style="background:#fff;border-radius:8px;box-shadow:0 1px 3px rgba(10,31,68,.08)">
+          <div style="padding:14px 20px;border-bottom:1px solid #eef1f6"><h2 style="margin:0;font-size:16px;font-weight:600">ทางลัด</h2></div>
+          <div style="padding:16px 20px;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px">
+            <button onClick="{{ go.stuSettings }}" style="display:flex;gap:12px;align-items:center;padding:14px 16px;border:1px solid #dfe4ec;border-radius:8px;background:#fff;cursor:pointer;font-size:14px;text-align:left" style-hover="border-color:#163a78;background:#f5f8fe"><i class="bi bi-key" style="font-size:22px;color:#163a78"></i>เปลี่ยนรหัสผ่าน SSH/SFTP</button>
+            <button onClick="{{ go.stuSettings }}" style="display:flex;gap:12px;align-items:center;padding:14px 16px;border:1px solid #dfe4ec;border-radius:8px;background:#fff;cursor:pointer;font-size:14px;text-align:left" style-hover="border-color:#163a78;background:#f5f8fe"><i class="bi bi-database-lock" style="font-size:22px;color:#163a78"></i>เปลี่ยนรหัสผ่านฐานข้อมูล</button>
+            <button onClick="{{ downloadGuide }}" style="display:flex;gap:12px;align-items:center;padding:14px 16px;border:1px solid #dfe4ec;border-radius:8px;background:#fff;cursor:pointer;font-size:14px;text-align:left" style-hover="border-color:#163a78;background:#f5f8fe"><i class="bi bi-file-earmark-arrow-down" style="font-size:22px;color:#163a78"></i>ดาวน์โหลดคู่มือเชื่อมต่อ FileZilla</button>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isStuSettings }}" hint-placeholder-val="{{ false }}">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,360px),1fr));gap:20px;align-items:start">
+          <div style="background:#fff;border-radius:8px;box-shadow:0 1px 3px rgba(10,31,68,.08);border-top:3px solid #0a1f44">
+            <div style="padding:14px 20px;border-bottom:1px solid #eef1f6"><h2 style="margin:0;font-size:16px;font-weight:600">ข้อมูลบัญชี</h2></div>
+            <div style="padding:20px;display:flex;flex-direction:column;gap:16px;font-size:14px">
+              <div style="display:flex;flex-direction:column;gap:6px"><span style="font-weight:500">Username</span>
+                <div style="display:flex;align-items:center;gap:8px;padding:10px 12px;border:1px solid #dfe4ec;border-radius:6px;background:#f3f5f9;font-family:'IBM Plex Mono',monospace;color:#5b6577"><i class="bi bi-lock-fill"></i>{{ me.username }}</div>
+                <span style="font-size:12px;color:#8a93a3">เปลี่ยนไม่ได้ เนื่องจากผูกกับบัญชี Linux ฐานข้อมูล และ Subdomain</span>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+                <div style="display:flex;flex-direction:column;gap:4px"><span style="color:#5b6577;font-size:13px">ชื่อ-นามสกุล</span><span>{{ me.name }}</span></div>
+                <div style="display:flex;flex-direction:column;gap:4px"><span style="color:#5b6577;font-size:13px">รหัสนักศึกษา</span><span style="font-family:'IBM Plex Mono',monospace">{{ me.studentId }}</span></div>
+                <div style="display:flex;flex-direction:column;gap:4px;grid-column:1/-1"><span style="color:#5b6577;font-size:13px">อีเมลสถาบัน</span><span>{{ me.email }}</span></div>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:20px">
+            <sc-for list="{{ pwForms }}" as="f" hint-placeholder-count="2">
+              <div style="background:#fff;border-radius:8px;box-shadow:0 1px 3px rgba(10,31,68,.08);border-top:3px solid #163a78">
+                <div style="padding:14px 20px;border-bottom:1px solid #eef1f6;display:flex;gap:10px;align-items:center"><i class="bi {{ f.icon }}" style="color:#163a78"></i><h2 style="margin:0;font-size:16px;font-weight:600">{{ f.title }}</h2></div>
+                <div style="padding:20px;display:flex;flex-direction:column;gap:12px">
+                  <input type="password" placeholder="รหัสผ่านใหม่" value="{{ f.a }}" onChange="{{ f.onA }}" style="padding:10px 12px;border:1px solid #ced4da;border-radius:6px;font-size:14px" style-focus="outline:none;border-color:#163a78;box-shadow:0 0 0 3px rgba(22,58,120,.15)">
+                  <input type="password" placeholder="ยืนยันรหัสผ่านใหม่" value="{{ f.b }}" onChange="{{ f.onB }}" style="padding:10px 12px;border:1px solid #ced4da;border-radius:6px;font-size:14px" style-focus="outline:none;border-color:#163a78;box-shadow:0 0 0 3px rgba(22,58,120,.15)">
+                  <div style="display:flex;justify-content:space-between;align-items:center;gap:12px">
+                    <span style="font-size:13px;color:{{ f.hintColor }}">{{ f.hint }}</span>
+                    <button onClick="{{ f.onSave }}" disabled="{{ f.disabled }}" style="padding:9px 18px;border-radius:6px;border:0;background:#0a1f44;color:#fff;font-size:14px;font-weight:600;cursor:pointer;opacity:{{ f.opacity }}">บันทึก</button>
+                  </div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        <div style="background:#fff;border-radius:8px;box-shadow:0 1px 3px rgba(10,31,68,.08);border-top:3px solid #dc3545">
+          <div style="padding:14px 20px;border-bottom:1px solid #eef1f6"><h2 style="margin:0;font-size:16px;font-weight:600;color:#b02a37">ปิด/ลบบัญชีของตนเอง</h2></div>
+          <div style="padding:20px;display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;align-items:center">
+            <p style="margin:0;color:#5b6577;font-size:14px;line-height:1.7;max-width:640px">ไฟล์เว็บไซต์ ฐานข้อมูล และบัญชี SFTP ทั้งหมดจะถูกลบออกจากเซิร์ฟเวอร์ถาวร และกู้คืนไม่ได้</p>
+            <button onClick="{{ openSelfDelete }}" style="padding:10px 18px;border-radius:6px;border:1px solid #dc3545;background:#fff;color:#dc3545;font-size:14px;font-weight:600;cursor:pointer" style-hover="background:#dc3545;color:#fff">ลบบัญชีของฉัน</button>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isAdmOverview }}" hint-placeholder-val="{{ false }}">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px">
+          <sc-for list="{{ adminStats }}" as="s" hint-placeholder-count="4">
+            <div style="background:#fff;border-radius:8px;box-shadow:0 1px 3px rgba(10,31,68,.08);padding:16px;display:flex;gap:14px;align-items:center">
+              <span style="width:56px;height:56px;flex:none;border-radius:8px;background:{{ s.bg }};color:#fff;display:grid;place-items:center;font-size:24px"><i class="bi {{ s.icon }}"></i></span>
+              <div style="display:flex;flex-direction:column;gap:2px;min-width:0">
+                <span style="font-size:13px;color:#5b6577">{{ s.label }}</span>
+                <span style="font-size:22px;font-weight:700;color:#0a1f44">{{ s.value }}</span>
+                <span style="font-size:12px;color:#8a93a3">{{ s.sub }}</span>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:20px;align-items:start">
+          <div style="background:#fff;border-radius:8px;box-shadow:0 1px 3px rgba(10,31,68,.08);border-top:3px solid #0a1f44">
+            <div style="padding:14px 20px;border-bottom:1px solid #eef1f6;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap"><h2 style="margin:0;font-size:16px;font-weight:600">การใช้ดิสก์รวม 14 วันล่าสุด (GB)</h2><span style="font-size:12px;color:#8a93a3">อัปเดตล่าสุดเมื่อ {{ lastSync }}</span></div>
+            <div style="padding:20px">
+              <div style="position:relative;height:220px;display:flex;align-items:flex-end;gap:6px;border-bottom:1px solid #dfe4ec;border-left:1px solid #dfe4ec;padding-left:6px">
+                <div style="position:absolute;left:0;right:0;bottom:93.75%;border-top:1px dashed #dc3545"></div>
+                <span style="position:absolute;right:0;bottom:93.75%;padding-bottom:2px;font-size:11px;color:#dc3545">ขีดจำกัด 150 GB</span>
+                <sc-for list="{{ diskSeries }}" as="d" hint-placeholder-count="14">
+                  <div title="{{ d.tip }}" style="flex:1;height:{{ d.h }};background:{{ d.bg }};border-radius:3px 3px 0 0"></div>
+                </sc-for>
+              </div>
+              <div style="display:flex;justify-content:space-between;font-size:11px;color:#8a93a3;margin-top:6px;padding-left:6px"><span>14 ก.ย.</span><span>20 ก.ย.</span><span>27 ก.ย.</span></div>
+            </div>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:20px">
+            <div style="background:#fff;border-radius:8px;box-shadow:0 1px 3px rgba(10,31,68,.08);border-top:3px solid #163a78">
+              <div style="padding:14px 20px;border-bottom:1px solid #eef1f6"><h2 style="margin:0;font-size:16px;font-weight:600">ความจุของระบบ (Capacity)</h2></div>
+              <div style="padding:20px;display:flex;flex-direction:column;gap:18px">
+                <sc-for list="{{ capacityBars }}" as="c" hint-placeholder-count="3">
+                  <div style="display:flex;flex-direction:column;gap:6px">
+                    <div style="display:flex;justify-content:space-between;font-size:14px"><span>{{ c.label }}</span><strong>{{ c.value }}</strong></div>
+                    <div style="height:8px;border-radius:4px;background:#e9edf3;overflow:hidden"><div style="height:100%;width:{{ c.w }};background:{{ c.bg }}"></div></div>
+                  </div>
+                </sc-for>
+                <span style="font-size:12px;color:#8a93a3">อ้างอิงจากไฟล์คำนวณ Capacity Planning</span>
+              </div>
+            </div>
+            <div style="background:#fff;border-radius:8px;box-shadow:0 1px 3px rgba(10,31,68,.08)">
+              <div style="padding:14px 20px;border-bottom:1px solid #eef1f6"><h2 style="margin:0;font-size:16px;font-weight:600">บริการบนเซิร์ฟเวอร์</h2></div>
+              <div style="padding:6px 20px 12px">
+                <sc-for list="{{ services }}" as="s" hint-placeholder-count="4">
+                  <div style="display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid #eef1f6;font-size:14px"><span>{{ s.name }}</span><span style="display:flex;align-items:center;gap:6px;color:#0f5132"><span style="width:8px;height:8px;border-radius:50%;background:#198754"></span>ทำงานปกติ</span></div>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="background:#fff;border-radius:8px;box-shadow:0 1px 3px rgba(10,31,68,.08)">
+          <div style="padding:14px 20px;border-bottom:1px solid #eef1f6;display:flex;justify-content:space-between;align-items:center"><h2 style="margin:0;font-size:16px;font-weight:600">ผู้ใช้ที่ต้องดำเนินการ</h2><button onClick="{{ go.admUsers }}" style="background:none;border:0;color:#163a78;font-size:14px;cursor:pointer">ดูผู้ใช้ทั้งหมด <i class="bi bi-arrow-right"></i></button></div>
+          <div style="padding:4px 20px 12px">
+            <sc-for list="{{ attentionUsers }}" as="u" hint-placeholder-count="4">
+              <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #eef1f6;flex-wrap:wrap">
+                <span style="font-family:'IBM Plex Mono',monospace;font-size:14px;width:120px">{{ u.username }}</span>
+                <span style="flex:1;min-width:140px;font-size:14px;color:#5b6577">{{ u.fullName }}</span>
+                <span style="font-size:13px;color:#5b6577">{{ u.used }} / {{ u.soft }} MB</span>
+                <span style="padding:3px 10px;border-radius:999px;font-size:12px;font-weight:600;background:{{ u.st.bg }};color:{{ u.st.fg }}">{{ u.st.label }}</span>
+                <button onClick="{{ u.onView }}" style="padding:5px 12px;border-radius:5px;border:1px solid #ced4da;background:#fff;font-size:13px;cursor:pointer">จัดการ</button>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isAdmUsers }}" hint-placeholder-val="{{ false }}">
+        <div style="background:#fff;border-radius:8px;box-shadow:0 1px 3px rgba(10,31,68,.08);border-top:3px solid #0a1f44">
+          <div style="padding:14px 20px;border-bottom:1px solid #eef1f6;display:flex;flex-wrap:wrap;gap:10px;align-items:center">
+            <div style="display:flex;align-items:center;gap:8px;border:1px solid #ced4da;border-radius:6px;padding:0 10px;flex:1;min-width:220px">
+              <i class="bi bi-search" style="color:#8a93a3"></i>
+              <input value="{{ search }}" onChange="{{ on.search }}" placeholder="ค้นหา username, ชื่อ, รหัสนักศึกษา" style="flex:1;min-width:0;border:0;outline:none;padding:9px 0;font-size:14px">
+            </div>
+            <select value="{{ fCourse }}" onChange="{{ on.fCourse }}" style="padding:9px 10px;border:1px solid #ced4da;border-radius:6px;font-size:14px;background:#fff">
+              <option value="">ทุกรายวิชา</option>
+              <option value="การพัฒนาเว็บเบื้องต้น">การพัฒนาเว็บเบื้องต้น</option>
+              <option value="PHP และ MariaDB">PHP และ MariaDB</option>
+              <option value="โครงงานคอมพิวเตอร์">โครงงานคอมพิวเตอร์</option>
+            </select>
+            <select value="{{ fYear }}" onChange="{{ on.fYear }}" style="padding:9px 10px;border:1px solid #ced4da;border-radius:6px;font-size:14px;background:#fff">
+              <option value="">ทุกปีการศึกษา</option>
+              <option value="2567">2567</option>
+              <option value="2568">2568</option>
+            </select>
+            <select value="{{ fStatus }}" onChange="{{ on.fStatus }}" style="padding:9px 10px;border:1px solid #ced4da;border-radius:6px;font-size:14px;background:#fff">
+              <option value="">ทุกสถานะ</option>
+              <option value="ok">ปกติ</option>
+              <option value="warn">ใกล้เต็มโควตา</option>
+              <option value="over">เกินโควตา</option>
+              <option value="suspended">ระงับ</option>
+              <option value="pending">รอยืนยัน</option>
+            </select>
+          </div>
+          <div style="overflow-x:auto">
+            <div style="min-width:1060px">
+              <div style="display:grid;grid-template-columns:130px minmax(150px,1.3fr) minmax(150px,1.2fr) 64px minmax(170px,1fr) 110px 120px 118px;background:#f7f9fc;border-bottom:1px solid #dfe4ec">
+                <sc-for list="{{ cols }}" as="c" hint-placeholder-count="8">
+                  <button onClick="{{ c.onClick }}" style="display:flex;align-items:center;gap:4px;padding:11px 14px;border:0;background:transparent;text-align:left;font-weight:600;color:#5b6577;font-size:13px;cursor:{{ c.cursor }};white-space:nowrap">{{ c.label }}<i class="bi {{ c.icon }}" style="font-size:11px;color:{{ c.iconColor }}"></i></button>
+                </sc-for>
+              </div>
+              <sc-for list="{{ rows }}" as="u" hint-placeholder-count="8">
+                <div style="display:grid;grid-template-columns:130px minmax(150px,1.3fr) minmax(150px,1.2fr) 64px minmax(170px,1fr) 110px 120px 118px;align-items:center;border-bottom:1px solid #eef1f6;font-size:14px" style-hover="background:#f7f9fc">
+                  <span style="padding:12px 14px;font-family:'IBM Plex Mono',monospace;font-size:13px">{{ u.username }}</span>
+                  <span style="padding:12px 14px;display:flex;flex-direction:column;line-height:1.35"><span>{{ u.fullName }}</span><span style="font-size:12px;color:#8a93a3;font-family:'IBM Plex Mono',monospace">{{ u.sid }}</span></span>
+                  <span style="padding:12px 14px;color:#5b6577;font-size:13px">{{ u.course }}</span>
+                  <span style="padding:12px 14px;color:#5b6577">{{ u.year }}</span>
+                  <span style="padding:12px 14px;display:flex;flex-direction:column;gap:5px"><span style="font-size:12px;color:#5b6577">{{ u.used }} / {{ u.soft }} MB</span><span style="height:6px;border-radius:3px;background:#e9edf3;overflow:hidden;display:block"><span style="display:block;height:100%;width:{{ u.barW }};background:{{ u.st.bar }}"></span></span></span>
+                  <span style="padding:12px 14px;color:#5b6577;font-size:13px">{{ u.createdTxt }}</span>
+                  <span style="padding:12px 14px"><span style="padding:3px 10px;border-radius:999px;font-size:12px;font-weight:600;background:{{ u.st.bg }};color:{{ u.st.fg }};white-space:nowrap">{{ u.st.label }}</span></span>
+                  <span style="padding:8px 14px;display:flex;gap:6px">
+                    <button onClick="{{ u.onView }}" title="จัดการ / ปรับโควตา" style="width:30px;height:30px;border-radius:5px;border:1px solid #ced4da;background:#fff;color:#163a78;cursor:pointer"><i class="bi bi-sliders"></i></button>
+                    <button onClick="{{ u.onSuspend }}" title="{{ u.suspendTitle }}" style="width:30px;height:30px;border-radius:5px;border:1px solid #ced4da;background:#fff;color:#997404;cursor:pointer"><i class="bi {{ u.suspendIcon }}"></i></button>
+                    <button onClick="{{ u.onDelete }}" title="ลบบัญชีถาวร" style="width:30px;height:30px;border-radius:5px;border:1px solid #f1aeb5;background:#fff;color:#dc3545;cursor:pointer"><i class="bi bi-trash3"></i></button>
+                  </span>
+                </div>
+              </sc-for>
+              <sc-if value="{{ noRows }}" hint-placeholder-val="{{ false }}">
+                <div style="padding:40px;text-align:center;color:#8a93a3;font-size:14px">ไม่พบผู้ใช้ตามเงื่อนไขที่เลือก</div>
+              </sc-if>
+            </div>
+          </div>
+          <div style="padding:12px 20px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;font-size:13px;color:#5b6577">
+            <span>แสดง {{ rowCount }} รายการ</span>
+            <span><i class="bi bi-clock-history"></i> การใช้พื้นที่อัปเดตล่าสุดเมื่อ {{ lastSync }}</span>
+          </div>
+        </div>
+      </sc-if>
+    </main>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ hasUserModal }}" hint-placeholder-val="{{ false }}">
+  <div onClick="{{ closeModal }}" style="position:fixed;inset:0;z-index:50;background:rgba(10,31,68,.55);display:flex;align-items:flex-start;justify-content:center;padding:60px 16px;overflow:auto">
+    <div onClick="{{ stop }}" style="width:100%;max-width:620px;background:#fff;border-radius:10px;box-shadow:0 20px 50px rgba(0,0,0,.3)">
+      <div style="padding:16px 20px;border-bottom:1px solid #dfe4ec;display:flex;align-items:center;gap:12px">
+        <h2 style="margin:0;font-size:18px;font-family:'IBM Plex Mono',monospace">{{ mu.username }}</h2>
+        <span style="padding:3px 10px;border-radius:999px;font-size:12px;font-weight:600;background:{{ mu.st.bg }};color:{{ mu.st.fg }}">{{ mu.st.label }}</span>
+        <span style="flex:1"></span>
+        <button onClick="{{ closeModal }}" style="width:32px;height:32px;border:0;background:transparent;font-size:20px;cursor:pointer;color:#5b6577"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div style="padding:20px;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;font-size:14px;border-bottom:1px solid #eef1f6">
+        <div style="display:flex;flex-direction:column;gap:3px"><span style="font-size:12px;color:#5b6577">ชื่อ-นามสกุล</span>{{ mu.fullName }}</div>
+        <div style="display:flex;flex-direction:column;gap:3px"><span style="font-size:12px;color:#5b6577">รหัสนักศึกษา</span><span style="font-family:'IBM Plex Mono',monospace">{{ mu.sid }}</span></div>
+        <div style="display:flex;flex-direction:column;gap:3px"><span style="font-size:12px;color:#5b6577">อีเมล</span>{{ mu.email }}</div>
+        <div style="display:flex;flex-direction:column;gap:3px"><span style="font-size:12px;color:#5b6577">รายวิชา / ปีการศึกษา</span>{{ mu.course }} · {{ mu.year }}</div>
+        <div style="display:flex;flex-direction:column;gap:3px"><span style="font-size:12px;color:#5b6577">วันที่สมัคร</span>{{ mu.createdTxt }}</div>
+        <div style="display:flex;flex-direction:column;gap:3px"><span style="font-size:12px;color:#5b6577">Base URL</span><span style="font-family:'IBM Plex Mono',monospace;font-size:13px;overflow-wrap:anywhere">{{ mu.url }}</span></div>
+      </div>
+      <div style="padding:20px;display:flex;flex-direction:column;gap:12px;border-bottom:1px solid #eef1f6">
+        <div style="display:flex;justify-content:space-between;font-size:14px"><strong>การใช้พื้นที่</strong><span style="color:#5b6577">{{ mu.used }} / {{ mu.soft }} MB ({{ mu.pct }}%)</span></div>
+        <div style="height:10px;border-radius:5px;background:#e9edf3;overflow:hidden"><div style="height:100%;width:{{ mu.barW }};background:{{ mu.st.bar }}"></div></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr auto;gap:10px;align-items:end;margin-top:6px">
+          <label style="display:flex;flex-direction:column;gap:5px;font-size:13px;font-weight:500">Soft limit (MB)<input type="number" value="{{ quotaDraft.soft }}" onChange="{{ on.qSoft }}" style="padding:9px 10px;border:1px solid #ced4da;border-radius:6px;font-size:14px"></label>
+          <label style="display:flex;flex-direction:column;gap:5px;font-size:13px;font-weight:500">Hard limit (MB)<input type="number" value="{{ quotaDraft.hard }}" onChange="{{ on.qHard }}" style="padding:9px 10px;border:1px solid #ced4da;border-radius:6px;font-size:14px"></label>
+          <button onClick="{{ askQuota }}" disabled="{{ quotaInvalid }}" style="padding:10px 16px;border-radius:6px;border:0;background:#0a1f44;color:#fff;font-size:14px;font-weight:600;cursor:pointer;opacity:{{ quotaOpacity }}">ปรับโควตา</button>
+        </div>
+        <span style="font-size:12px;color:{{ quotaHintColor }}">{{ quotaHint }}</span>
+      </div>
+      <div style="padding:16px 20px;display:flex;gap:10px;flex-wrap:wrap;background:#fafbfd;border-radius:0 0 10px 10px">
+        <button onClick="{{ mu.onSuspend }}" style="padding:9px 16px;border-radius:6px;border:1px solid #ffc107;background:#fff;color:#664d03;font-size:14px;cursor:pointer;display:flex;gap:8px;align-items:center"><i class="bi {{ mu.suspendIcon }}"></i>{{ mu.suspendTitle }}</button>
+        <span style="flex:1"></span>
+        <button onClick="{{ mu.onDelete }}" style="padding:9px 16px;border-radius:6px;border:0;background:#dc3545;color:#fff;font-size:14px;cursor:pointer;display:flex;gap:8px;align-items:center"><i class="bi bi-trash3"></i>ลบบัญชีถาวร</button>
+      </div>
+    </div>
+  </div>
+</sc-if>
+
+<sc-if value="{{ hasConfirm }}" hint-placeholder-val="{{ false }}">
+  <div style="position:fixed;inset:0;z-index:60;background:rgba(10,31,68,.6);display:flex;align-items:center;justify-content:center;padding:16px">
+    <div style="width:100%;max-width:460px;background:#fff;border-radius:10px;box-shadow:0 20px 50px rgba(0,0,0,.35)">
+      <div style="padding:22px 22px 8px;display:flex;gap:14px;align-items:flex-start">
+        <span style="width:44px;height:44px;flex:none;border-radius:50%;background:{{ cf.iconBg }};color:{{ cf.iconFg }};display:grid;place-items:center;font-size:20px"><i class="bi {{ cf.icon }}"></i></span>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <h3 style="margin:0;font-size:18px">{{ cf.title }}</h3>
+          <p style="margin:0;color:#5b6577;font-size:14px;line-height:1.7">{{ cf.body }}</p>
+        </div>
+      </div>
+      <sc-if value="{{ cf.needType }}" hint-placeholder-val="{{ false }}">
+        <label style="margin:10px 22px 0;display:flex;flex-direction:column;gap:6px;font-size:13px"><span>พิมพ์ <strong style="font-family:'IBM Plex Mono',monospace">{{ cf.target }}</strong> เพื่อยืนยัน</span>
+          <input value="{{ confirmText }}" onChange="{{ on.confirmText }}" style="padding:9px 10px;border:1px solid #ced4da;border-radius:6px;font-size:14px;font-family:'IBM Plex Mono',monospace">
+        </label>
+      </sc-if>
+      <div style="padding:14px 22px 20px;margin-top:10px;display:flex;justify-content:flex-end;gap:10px;align-items:center;flex-wrap:wrap">
+        <span style="flex:1;font-size:12px;color:#8a93a3;display:flex;gap:6px;align-items:center;min-width:150px"><i class="bi bi-hdd-rack"></i>คำสั่งนี้มีผลกับเซิร์ฟเวอร์จริง</span>
+        <button onClick="{{ closeConfirm }}" style="padding:9px 16px;border-radius:6px;border:1px solid #ced4da;background:#fff;font-size:14px;cursor:pointer">ยกเลิก</button>
+        <button onClick="{{ cf.onConfirm }}" disabled="{{ confirmDisabled }}" style="padding:9px 18px;border-radius:6px;border:0;background:{{ cf.btnBg }};color:#fff;font-size:14px;font-weight:600;cursor:pointer;opacity:{{ confirmOpacity }}">{{ cf.btn }}</button>
+      </div>
+    </div>
+  </div>
+</sc-if>
+
+<sc-if value="{{ showTerms }}" hint-placeholder-val="{{ false }}">
+  <div onClick="{{ closeTerms }}" style="position:fixed;inset:0;z-index:60;background:rgba(10,31,68,.55);display:flex;align-items:center;justify-content:center;padding:16px">
+    <div onClick="{{ stop }}" style="width:100%;max-width:520px;background:#fff;border-radius:10px">
+      <div style="padding:16px 20px;border-bottom:1px solid #dfe4ec"><h3 style="margin:0;font-size:18px">ข้อตกลงการใช้งาน (Terms)</h3></div>
+      <ol style="margin:0;padding:16px 20px 16px 40px;display:flex;flex-direction:column;gap:10px;font-size:14px;line-height:1.7;color:#1b2433">
+        <li>ใช้พื้นที่เพื่อการเรียนการสอนและโครงงานของนักศึกษาเท่านั้น</li>
+        <li>ห้ามเผยแพร่เนื้อหาที่ผิดกฎหมาย ละเมิดลิขสิทธิ์ หรือโปรแกรมที่เป็นอันตราย</li>
+        <li>ห้ามเปิดเผยรหัสผ่าน SFTP และฐานข้อมูลแก่ผู้อื่น</li>
+        <li>บัญชีที่ไม่มีการใช้งานเกิน 1 ภาคเรียนอาจถูกระงับหรือลบโดยผู้ดูแลระบบ</li>
+      </ol>
+      <div style="padding:14px 20px;border-top:1px solid #dfe4ec;display:flex;justify-content:flex-end;gap:10px">
+        <button onClick="{{ closeTerms }}" style="padding:9px 16px;border-radius:6px;border:1px solid #ced4da;background:#fff;font-size:14px;cursor:pointer">ปิด</button>
+        <button onClick="{{ acceptTerms }}" style="padding:9px 16px;border-radius:6px;border:0;background:#0a1f44;color:#fff;font-size:14px;font-weight:600;cursor:pointer">ยอมรับ</button>
+      </div>
+    </div>
+  </div>
+</sc-if>
+
+<sc-if value="{{ hasToast }}" hint-placeholder-val="{{ false }}">
+  <div style="position:fixed;right:20px;bottom:20px;z-index:70;background:#0a1f44;color:#fff;padding:12px 18px;border-radius:8px;box-shadow:0 10px 30px rgba(0,0,0,.25);font-size:14px;display:flex;gap:10px;align-items:center"><i class="bi bi-check-circle-fill" style="color:#3ddc84"></i>{{ toast }}</div>
+</sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;startScreen&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;landing&quot;,&quot;signup&quot;,&quot;otp&quot;,&quot;success&quot;,&quot;login&quot;,&quot;student&quot;,&quot;admin&quot;],&quot;default&quot;:&quot;landing&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;เดโม&quot;},&quot;registrationFull&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;เดโม&quot;},&quot;studentUsagePct&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;min&quot;:0,&quot;max&quot;:110,&quot;step&quot;:1,&quot;unit&quot;:&quot;%&quot;,&quot;default&quot;:62,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;เดโม&quot;}}">
+class Component extends DCLogic {
+  state = this.buildState(this.props && this.props.startScreen);
+
+  seed() {
+    const W = 'การพัฒนาเว็บเบื้องต้น', P = 'PHP และ MariaDB', J = 'โครงงานคอมพิวเตอร์';
+    return [
+      ['somchai01','สมชาย ใจดี','6621010001',W,'2568',312,'active','2025-06-12'],
+      ['nattaya02','ณัฐธยา แสงทอง','6621010014',W,'2568',488,'active','2025-06-12'],
+      ['kittipong5','กิตติพงษ์ ศรีสุข','6521010033',P,'2567',540,'active','2024-11-03'],
+      ['pimchanok','พิมพ์ชนก วงศ์ดี','6621010027',W,'2568',45,'active','2025-06-15'],
+      ['arthit99','อาทิตย์ มั่นคง','6521010041',J,'2567',220,'suspended','2024-11-05'],
+      ['waranya','วรัญญา ทองคำ','6621010052',P,'2568',0,'pending','2025-09-26'],
+      ['theerawat','ธีรวัฒน์ บุญมา','6521010008',J,'2567',455,'active','2024-10-28'],
+      ['supansa','สุพรรษา เพชรรัตน์','6621010060',W,'2568',128,'active','2025-06-18'],
+      ['jirayu07','จิรายุ แก้วใส','6521010019',P,'2567',390,'active','2024-11-10'],
+      ['chanakan','ชนากานต์ มีสุข','6621010071',J,'2568',76,'active','2025-07-02'],
+      ['tanawat','ธนวัฒน์ รุ่งเรือง','6521010066',P,'2567',12,'active','2024-12-01'],
+      ['kamonwan','กมลวรรณ ศรีวงศ์','6621010083',W,'2568',0,'pending','2025-09-27']
+    ].map(r => ({ username:r[0], fullName:r[1], sid:r[2], course:r[3], year:r[4], used:r[5], soft:500, hard:550, status:r[6], created:r[7], email:r[0]+'@college.ac.th' }));
+  }
+
+  buildState(start) {
+    return Object.assign({
+      screen:'landing', role:'student', page:'dash',
+      form:{ fullName:'', studentId:'', email:'', username:'', agree:false },
+      otp:'', otpError:false, resendIn:0, provIdx:0, copied:null, sidebarOpen:true,
+      search:'', fCourse:'', fYear:'', fStatus:'', sortKey:'created', sortDir:'desc',
+      users:this.seed(), modal:null, confirm:null, confirmText:'', quotaDraft:{soft:'',hard:''},
+      pw:{ ssh:{a:'',b:''}, db:{a:'',b:''} }, toast:null, showTerms:false, loginUser:'somchai01', deleted:false
+    }, this.applyStart(start));
+  }
+
+  applyStart(s) {
+    const demo = { fullName:'สมชาย ใจดี', studentId:'6621010001', email:'somchai01@college.ac.th', username:'somchai99', agree:true };
+    switch (s) {
+      case 'signup': return { screen:'signup' };
+      case 'otp': return { screen:'otp', form:demo, resendIn:45 };
+      case 'success': return { screen:'success', form:demo };
+      case 'login': return { screen:'login' };
+      case 'student': return { screen:'app', role:'student', page:'dash' };
+      case 'admin': return { screen:'app', role:'admin', page:'overview' };
+      default: return { screen:'landing' };
+    }
+  }
+
+  componentDidMount() {
+    this.tick = setInterval(() => { if (this.state.resendIn > 0) this.setState(s => ({ resendIn: Math.max(0, s.resendIn - 1) })); }, 1000);
+  }
+  componentWillUnmount() { clearInterval(this.tick); clearInterval(this.pv); clearTimeout(this.tt); }
+  componentDidUpdate(prev, prevState) {
+    if (prev.startScreen !== this.props.startScreen) this.setState(this.applyStart(this.props.startScreen));
+    if (prevState && (prevState.screen !== this.state.screen || prevState.page !== this.state.page)) window.scrollTo(0, 0);
+  }
+
+  showToast(msg) {
+    this.setState({ toast: msg });
+    clearTimeout(this.tt);
+    this.tt = setTimeout(() => this.setState({ toast: null }), 2600);
+  }
+
+  stCfg(key) {
+    return {
+      ok:{ label:'ปกติ', bg:'#d1e7dd', fg:'#0f5132', bar:'#198754' },
+      warn:{ label:'ใกล้เต็มโควตา', bg:'#fff3cd', fg:'#664d03', bar:'#ffc107' },
+      over:{ label:'เกินโควตา', bg:'#f8d7da', fg:'#842029', bar:'#dc3545' },
+      suspended:{ label:'ระงับ', bg:'#f8d7da', fg:'#842029', bar:'#dc3545' },
+      pending:{ label:'รอยืนยัน', bg:'#e2e3e5', fg:'#41464b', bar:'#6c757d' }
+    }[key];
+  }
+  statusKey(u) {
+    if (u.status === 'suspended' || u.status === 'pending') return u.status;
+    const p = u.used / u.soft * 100;
+    return p >= 100 ? 'over' : p >= 85 ? 'warn' : 'ok';
+  }
+  thaiDate(iso) {
+    const m = ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
+    const [y, mo, d] = iso.split('-').map(Number);
+    return d + ' ' + m[mo - 1] + ' ' + (y + 543);
+  }
+  decorate(u) {
+    const key = this.statusKey(u), pct = Math.round(u.used / u.soft * 100), susp = u.status === 'suspended';
+    return Object.assign({}, u, {
+      st: this.stCfg(key), stKey: key, pct, barW: Math.min(pct, 100) + '%',
+      createdTxt: this.thaiDate(u.created), url: 'https://' + u.username + '.hosting.college.ac.th',
+      suspendIcon: susp ? 'bi-play-circle' : 'bi-pause-circle', suspendTitle: susp ? 'ยกเลิกการระงับ' : 'ระงับชั่วคราว',
+      onView: () => this.setState({ modal: u.username, quotaDraft: { soft: String(u.soft), hard: String(u.hard) } }),
+      onSuspend: () => this.openConfirm(susp ? 'unsuspend' : 'suspend', u.username),
+      onDelete: () => this.openConfirm('delete', u.username)
+    });
+  }
+
+  openConfirm(kind, username) { this.setState({ confirm: { kind, username }, confirmText: '' }); }
+
+  confirmCfg() {
+    const c = this.state.confirm; if (!c) return null;
+    const u = c.username, danger = { iconBg:'#f8d7da', iconFg:'#b02a37', btnBg:'#dc3545' }, info = { iconBg:'#e8eefb', iconFg:'#163a78', btnBg:'#0a1f44' };
+    const q = this.state.quotaDraft;
+    const map = {
+      suspend: Object.assign({ icon:'bi-pause-circle', title:'ระงับบัญชีชั่วคราว', body:'บัญชี ' + u + ' จะเข้าใช้ SFTP และฐานข้อมูลไม่ได้ และเว็บไซต์จะแสดงหน้าระงับ จนกว่าจะยกเลิกการระงับ', btn:'ระงับบัญชี' }, { iconBg:'#fff3cd', iconFg:'#664d03', btnBg:'#997404' }),
+      unsuspend: Object.assign({ icon:'bi-play-circle', title:'ยกเลิกการระงับ', body:'เปิดใช้งานบัญชี ' + u + ' อีกครั้ง ผู้ใช้จะเข้าใช้ SFTP และเว็บไซต์ได้ตามปกติ', btn:'ยกเลิกการระงับ' }, info),
+      delete: Object.assign({ icon:'bi-trash3', title:'ลบบัญชีถาวร', body:'ระบบจะลบบัญชี Linux ฐานข้อมูล MariaDB ผู้ใช้ฐานข้อมูล และ Virtual Host ของ ' + u + ' ออกจากเซิร์ฟเวอร์ และกู้คืนไม่ได้', btn:'ลบถาวร', needType:true, target:u }, danger),
+      quota: Object.assign({ icon:'bi-sliders', title:'ยืนยันการปรับโควตา', body:'ปรับโควตาของ ' + u + ' เป็น Soft ' + q.soft + ' MB / Hard ' + q.hard + ' MB', btn:'ยืนยัน' }, info),
+      selfDelete: Object.assign({ icon:'bi-exclamation-octagon', title:'ลบบัญชีของฉัน', body:'ไฟล์เว็บไซต์ ฐานข้อมูล และบัญชี SFTP ของ ' + u + ' จะถูกลบถาวร คุณจะต้องสมัครใหม่หากต้องการใช้งานอีก', btn:'ลบบัญชีของฉัน', needType:true, target:u }, danger),
+      pwssh: Object.assign({ icon:'bi-key', title:'เปลี่ยนรหัสผ่าน SSH/SFTP', body:'รหัสผ่านเดิมจะใช้ไม่ได้ทันที ต้องแก้ไขรหัสผ่านใน FileZilla ด้วย', btn:'เปลี่ยนรหัสผ่าน' }, info),
+      pwdb: Object.assign({ icon:'bi-database-lock', title:'เปลี่ยนรหัสผ่านฐานข้อมูล', body:'ต้องแก้ไขรหัสผ่านในไฟล์ตั้งค่าการเชื่อมต่อฐานข้อมูลของเว็บไซต์ (เช่น config.php) ด้วย', btn:'เปลี่ยนรหัสผ่าน' }, info)
+    };
+    return Object.assign({ needType:false, target:'' }, map[c.kind], { onConfirm: () => this.runConfirm() });
+  }
+
+  runConfirm() {
+    const { kind, username } = this.state.confirm;
+    const upd = fn => this.setState(s => ({ users: s.users.map(x => x.username === username ? fn(x) : x) }));
+    if (kind === 'suspend') { upd(x => Object.assign({}, x, { status:'suspended' })); this.showToast('ระงับบัญชี ' + username + ' แล้ว'); }
+    if (kind === 'unsuspend') { upd(x => Object.assign({}, x, { status:'active' })); this.showToast('เปิดใช้งานบัญชี ' + username + ' แล้ว'); }
+    if (kind === 'quota') { const q = this.state.quotaDraft; upd(x => Object.assign({}, x, { soft:+q.soft, hard:+q.hard })); this.showToast('ปรับโควตาของ ' + username + ' แล้ว'); }
+    if (kind === 'delete') { this.setState(s => ({ users: s.users.filter(x => x.username !== username), modal:null })); this.showToast('ลบบัญชี ' + username + ' แล้ว'); }
+    if (kind === 'selfDelete') { this.setState({ screen:'landing' }); this.showToast('ลบบัญชีเรียบร้อยแล้ว'); }
+    if (kind === 'pwssh' || kind === 'pwdb') { const k = kind.slice(2); this.setState(s => ({ pw: Object.assign({}, s.pw, { [k]: { a:'', b:'' } }) })); this.showToast('เปลี่ยนรหัสผ่านเรียบร้อยแล้ว'); }
+    this.setState({ confirm:null, confirmText:'' });
+  }
+
+  uCheck() {
+    const u = this.state.form.username;
+    const red = m => ({ border:'#dc3545', color:'#b02a37', icon:'bi-x-circle', msg:m, ok:false });
+    if (!u) return { border:'#ced4da', color:'#5b6577', icon:'bi-info-circle', msg:'ใช้ได้เฉพาะ a-z และ 0-9 ความยาว 4–16 ตัวอักษร', ok:false };
+    if (!/^[a-z0-9]+$/.test(u)) return red('มีอักขระที่ไม่อนุญาต ใช้ได้เฉพาะ a-z และ 0-9');
+    if (u.length < 4) return red('สั้นเกินไป ต้องมีอย่างน้อย 4 ตัวอักษร');
+    if (['admin','root','www','mail','ftp','mysql'].includes(u) || this.state.users.some(x => x.username === u)) return red('username นี้ถูกใช้แล้ว');
+    return { border:'#198754', color:'#146c43', icon:'bi-check-circle', msg:'ใช้ได้', ok:true };
+  }
+
+  copy(key, val) {
+    try { navigator.clipboard && navigator.clipboard.writeText(val); } catch (e) {}
+    this.setState({ copied:key });
+    clearTimeout(this.ct); this.ct = setTimeout(() => this.setState({ copied:null }), 1500);
+  }
+
+  conn(u, withPw) {
+    const rows = [
+      ['Base URL','https://' + u + '.hosting.college.ac.th'],
+      ['SFTP Host','sftp.hosting.college.ac.th'],
+      ['Port','22'],
+      ['SSH/SFTP User',u]
+    ];
+    if (withPw) rows.push(['รหัสผ่าน SFTP','Hs7!qW2mRt']);
+    rows.push(['ฐานข้อมูล (Database)',u], ['ผู้ใช้ฐานข้อมูล',u], ['DB Host','localhost']);
+    if (withPw) rows.push(['รหัสผ่านฐานข้อมูล','Db4#kT9xLp']);
+    return rows;
+  }
+
+  startProvision() {
+    this.setState({ screen:'provisioning', provIdx:0 });
+    clearInterval(this.pv);
+    let i = 0;
+    this.pv = setInterval(() => {
+      i++;
+      if (i > 4) {
+        clearInterval(this.pv);
+        const f = this.state.form;
+        this.setState(s => ({ screen:'success', users: s.users.some(x => x.username === f.username) ? s.users : s.users.concat([{ username:f.username, fullName:f.fullName, sid:f.studentId, course:'การพัฒนาเว็บเบื้องต้น', year:'2568', used:0, soft:500, hard:550, status:'active', created:'2025-09-27', email:f.email }]) }));
+      } else this.setState({ provIdx:i });
+    }, 750);
+  }
+
+  renderVals() {
+    const s = this.state, p = this.props;
+    const full = !!p.registrationFull;
+    const setF = k => e => { let v = k === 'agree' ? e.target.checked : e.target.value; if (k === 'username') v = v.toLowerCase().trim(); this.setState(st => ({ form: Object.assign({}, st.form, { [k]: v }) })); };
+    const val = k => e => this.setState({ [k]: e.target.value });
+    const uc = this.uCheck(), f = s.form;
+    const canSubmit = !full && f.fullName.trim() && f.studentId.trim().length >= 5 && f.email.includes('@') && uc.ok && f.agree;
+
+    const go = {
+      landing: () => this.setState({ screen:'landing', modal:null }),
+      signup: () => this.setState({ screen:'signup' }),
+      login: () => this.setState({ screen:'login' }),
+      student: () => this.setState({ screen:'app', role:'student', page:'dash', loginUser: f.username || s.loginUser }),
+      stuSettings: () => this.setState({ page:'settings' }),
+      admUsers: () => this.setState({ page:'users' }),
+      admOverview: () => this.setState({ page:'overview' })
+    };
+
+    const stepIdx = { signup:0, otp:1, provisioning:2, success:2 }[s.screen];
+    const steps = ['กรอกข้อมูล','ยืนยันอีเมล','รับข้อมูลเชื่อมต่อ'].map((label, i) => ({
+      label, bar: i <= stepIdx ? '#0a1f44' : '#dfe4ec', fg: i <= stepIdx ? '#0a1f44' : '#8a93a3'
+    }));
+    const provSteps = ['สร้างบัญชี Linux และกำหนดโควตา','สร้างฐานข้อมูลและผู้ใช้ MariaDB','ตั้งค่า Virtual Host / Subdomain','ส่งข้อมูลเชื่อมต่อไปยังอีเมล'].map((label, i) => ({
+      label,
+      icon: i < s.provIdx ? 'bi-check-circle-fill' : i === s.provIdx ? 'bi-arrow-repeat' : 'bi-circle',
+      color: i < s.provIdx ? '#146c43' : i === s.provIdx ? '#163a78' : '#8a93a3'
+    }));
+
+    const isStu = s.role === 'student';
+    const stuUser = isStu ? (s.users.find(x => x.username === s.loginUser) || null) : null;
+    const me = isStu
+      ? { name: stuUser ? stuUser.fullName : (f.fullName || 'สมชาย ใจดี'), username: s.loginUser || 'somchai01', studentId: stuUser ? stuUser.sid : (f.studentId || '6621010001'), email: stuUser ? stuUser.email : (f.email || 'somchai01@college.ac.th'), roleLabel:'นักศึกษา', icon:'bi-person' }
+      : { name:'อ.วิชัย ผู้ดูแลระบบ', username:'admin.it', roleLabel:'ผู้ดูแลระบบ', icon:'bi-shield-lock' };
+
+    const mkRows = (u, withPw, pref) => this.conn(u, withPw).map(([label, value]) => ({
+      label, value, copyIcon: s.copied === pref + label ? 'bi-check2' : 'bi-clipboard', onCopy: () => this.copy(pref + label, value)
+    }));
+
+    const pct = p.studentUsagePct ?? 62;
+    const sKey = pct >= 100 ? 'over' : pct >= 85 ? 'warn' : 'ok';
+    const stu = {
+      pct, soft:500, hard:550, used: Math.round(pct * 5), barW: Math.min(pct, 100) + '%', st: this.stCfg(sKey),
+      boxBg: { ok:'#146c43', warn:'#997404', over:'#b02a37' }[sKey], warn: sKey !== 'ok',
+      warnMsg: sKey === 'warn' ? 'พื้นที่ใกล้เต็ม ควรลบไฟล์ที่ไม่ใช้ออกก่อนถึง Hard limit' : 'ใช้พื้นที่เกิน Soft limit แล้ว หากถึง Hard limit จะบันทึกไฟล์เพิ่มไม่ได้ กรุณาลบไฟล์ที่ไม่ใช้หรือติดต่อผู้ดูแลระบบ'
+    };
+
+    const pwForm = (k, title, icon) => {
+      const v = s.pw[k], ok = v.a.length >= 8 && v.a === v.b;
+      const hint = !v.a ? 'อย่างน้อย 8 ตัวอักษร' : v.a.length < 8 ? 'สั้นเกินไป (อย่างน้อย 8 ตัวอักษร)' : v.b && v.a !== v.b ? 'รหัสผ่านไม่ตรงกัน' : ok ? 'พร้อมบันทึก' : 'กรุณายืนยันรหัสผ่าน';
+      const setPw = side => e => { const val = e.target.value; this.setState(st => ({ pw: Object.assign({}, st.pw, { [k]: Object.assign({}, st.pw[k], { [side]: val }) }) })); };
+      return { title, icon, a:v.a, b:v.b, onA:setPw('a'), onB:setPw('b'), hint, hintColor: ok ? '#146c43' : (v.a && (v.a.length < 8 || (v.b && v.a !== v.b))) ? '#b02a37' : '#8a93a3', disabled:!ok, opacity: ok ? 1 : .5, onSave: () => this.openConfirm('pw' + k, me.username) };
+    };
+
+    const decorated = s.users.map(u => this.decorate(u));
+    const total = full ? 300 : 235 + s.users.length;
+    const overN = decorated.filter(u => u.stKey === 'over').length, pendN = decorated.filter(u => u.stKey === 'pending').length;
+    const barColor = r => r >= .9 ? '#dc3545' : r >= .75 ? '#ffc107' : '#163a78';
+    const disk = [86.1,86.9,87.4,88.0,88.8,89.5,90.2,91.0,92.3,93.1,94.0,95.6,97.2,98.4];
+
+    const q = s.search.trim().toLowerCase();
+    let rows = decorated.filter(u =>
+      (!q || u.username.includes(q) || u.fullName.toLowerCase().includes(q) || u.sid.includes(q)) &&
+      (!s.fCourse || u.course === s.fCourse) && (!s.fYear || u.year === s.fYear) && (!s.fStatus || u.stKey === s.fStatus));
+    const order = { over:0, warn:1, suspended:2, pending:3, ok:4 };
+    const getK = u => s.sortKey === 'status' ? order[u.stKey] : s.sortKey === 'used' ? u.pct : u[s.sortKey];
+    rows = rows.slice().sort((a, b) => { const x = getK(a), y = getK(b); const r = x < y ? -1 : x > y ? 1 : 0; return s.sortDir === 'asc' ? r : -r; });
+    const cols = [['username','Username'],['fullName','ชื่อ-นามสกุล'],[null,'รายวิชา'],['year','ปี'],['used','การใช้พื้นที่'],['created','วันที่สมัคร'],['status','สถานะ'],[null,'จัดการ']].map(([k, label]) => ({
+      label, cursor: k ? 'pointer' : 'default',
+      icon: !k ? '' : s.sortKey === k ? (s.sortDir === 'asc' ? 'bi-caret-up-fill' : 'bi-caret-down-fill') : 'bi-chevron-expand',
+      iconColor: s.sortKey === k ? '#0a1f44' : '#adb5bd',
+      onClick: () => k && this.setState(st => ({ sortKey:k, sortDir: st.sortKey === k && st.sortDir === 'asc' ? 'desc' : 'asc' }))
+    }));
+
+    const muRaw = s.modal && decorated.find(u => u.username === s.modal);
+    const qs = +s.quotaDraft.soft, qh = +s.quotaDraft.hard;
+    const quotaInvalid = !(qs > 0 && qh >= qs && qh <= 5000);
+    const cf = this.confirmCfg();
+    const confirmDisabled = !!(cf && cf.needType && s.confirmText !== cf.target);
+
+    const nav = isStu
+      ? [['dash','แดชบอร์ด','bi-speedometer2'],['settings','ตั้งค่าบัญชี','bi-gear']]
+      : [['overview','ภาพรวมระบบ','bi-speedometer2'],['users','จัดการผู้ใช้','bi-people']];
+    const titles = { dash:'แดชบอร์ด', settings:'ตั้งค่าบัญชี', overview:'ภาพรวมระบบ', users:'จัดการผู้ใช้' };
+
+    return {
+      isLanding: s.screen === 'landing',
+      isPublic: ['signup','otp','provisioning','success','login'].includes(s.screen),
+      inApp: s.screen === 'app',
+      isSignup: s.screen === 'signup', isOtp: s.screen === 'otp', isProvisioning: s.screen === 'provisioning', isSuccess: s.screen === 'success', isLogin: s.screen === 'login',
+      showStepper: stepIdx !== undefined, steps, provSteps,
+      registrationFull: full, registrationOpen: !full, seatsLeft: 300 - total,
+      go, form: f, uCheck: uc,
+      on: {
+        fullName:setF('fullName'), studentId:setF('studentId'), email:setF('email'), username:setF('username'), agree:setF('agree'),
+        otp: e => this.setState({ otp: e.target.value.replace(/\D/g, '').slice(0, 6), otpError:false }),
+        loginUser: val('loginUser'), search: val('search'), fCourse: val('fCourse'), fYear: val('fYear'), fStatus: val('fStatus'), confirmText: val('confirmText'),
+        qSoft: e => { const v = e.target.value; this.setState(st => ({ quotaDraft: Object.assign({}, st.quotaDraft, { soft:v }) })); },
+        qHard: e => { const v = e.target.value; this.setState(st => ({ quotaDraft: Object.assign({}, st.quotaDraft, { hard:v }) })); }
+      },
+      cannotSubmit: !canSubmit, submitOpacity: canSubmit ? 1 : .5, submitCursor: canSubmit ? 'pointer' : 'not-allowed',
+      submitSignup: () => { if (!canSubmit) return; this.setState({ screen:'otp', otp:'', otpError:false, resendIn:60 }); this.showToast('ส่งรหัสยืนยันไปที่ ' + f.email + ' แล้ว'); },
+      openTerms: e => { e.preventDefault(); this.setState({ showTerms:true }); },
+      closeTerms: () => this.setState({ showTerms:false }),
+      acceptTerms: () => this.setState(st => ({ showTerms:false, form: Object.assign({}, st.form, { agree:true }) })),
+      emailShown: f.email || 'somchai01@college.ac.th',
+      otp: s.otp, otpError: s.otpError, otpIncomplete: s.otp.length !== 6, otpOpacity: s.otp.length === 6 ? 1 : .5,
+      verifyOtp: () => { if (s.otp === '123456') this.startProvision(); else this.setState({ otpError:true }); },
+      canResend: s.resendIn === 0, resendWaiting: s.resendIn > 0, resendIn: s.resendIn,
+      resendOtp: () => { this.setState({ resendIn:60 }); this.showToast('ส่งรหัสใหม่แล้ว'); },
+      connRowsFull: mkRows(f.username || 'somchai99', true, 'f'),
+      connRowsDash: mkRows(me.username, false, 'd'),
+      downloadTxt: () => {
+        const u = f.username || 'somchai99';
+        const txt = 'Student Hosting Portal\n\n' + this.conn(u, true).map(r => r[0] + ': ' + r[1]).join('\n');
+        const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([txt], { type:'text/plain' })); a.download = u + '-hosting.txt'; a.click();
+      },
+      downloadPdf: () => this.showToast('ดาวน์โหลดไฟล์ PDF แล้ว (ตัวอย่าง)'),
+      downloadGuide: () => this.showToast('ดาวน์โหลดคู่มือ FileZilla แล้ว (ตัวอย่าง)'),
+      roleTab: { stuBg: isStu ? '#fff' : 'transparent', stuFg: isStu ? '#0a1f44' : '#5b6577', admBg: !isStu ? '#fff' : 'transparent', admFg: !isStu ? '#0a1f44' : '#5b6577' },
+      setRole: { student: () => this.setState({ role:'student', loginUser:'somchai01' }), admin: () => this.setState({ role:'admin', loginUser:'admin.it' }) },
+      loginUser: s.loginUser,
+      doLogin: () => this.setState(st => ({ screen:'app', page: st.role === 'student' ? 'dash' : 'overview' })),
+      logout: () => this.setState({ screen:'login' }),
+      me, sidebarW: s.sidebarOpen ? '250px' : '64px', toggleSidebar: () => this.setState(st => ({ sidebarOpen: !st.sidebarOpen })),
+      lastSync: '10:45 น.', pageTitle: titles[s.page],
+      navItems: nav.map(([k, label, icon]) => ({ label, icon, bg: s.page === k ? '#163a78' : 'transparent', fg: s.page === k ? '#fff' : '#c9d6ee', onClick: () => this.setState({ page:k }) })),
+      isStuDash: s.page === 'dash', isStuSettings: s.page === 'settings', isAdmOverview: s.page === 'overview', isAdmUsers: s.page === 'users',
+      stu,
+      pwForms: [pwForm('ssh','เปลี่ยนรหัสผ่าน SSH/SFTP','bi-key'), pwForm('db','เปลี่ยนรหัสผ่านฐานข้อมูล','bi-database-lock')],
+      openSelfDelete: () => this.openConfirm('selfDelete', me.username),
+      adminStats: [
+        { label:'ผู้ใช้ทั้งหมด', value: total + ' / 300', sub: full ? 'เต็มความจุ ปิดรับสมัคร' : 'รองรับได้อีก ' + (300 - total) + ' บัญชี', icon:'bi-people-fill', bg:'#0a1f44' },
+        { label:'พื้นที่ดิสก์รวม', value:'98.4 / 150 GB', sub:'ใช้ไป 66%', icon:'bi-hdd-fill', bg:'#163a78' },
+        { label:'เกินโควตา', value: overN + ' บัญชี', sub:'ควรแจ้งเตือนผู้ใช้', icon:'bi-exclamation-octagon-fill', bg:'#dc3545' },
+        { label:'รอยืนยันอีเมล', value: pendN + ' บัญชี', sub:'ยังไม่ได้สร้างทรัพยากร', icon:'bi-hourglass-split', bg:'#6c757d' }
+      ],
+      diskSeries: disk.map((v, i) => ({ h: (v / 160 * 100) + '%', bg: i === disk.length - 1 ? '#0a1f44' : '#8fa6d1', tip: v + ' GB' })),
+      capacityBars: [
+        { label:'จำนวนผู้ใช้', value: total + ' / 300', r: total / 300 },
+        { label:'พื้นที่ดิสก์', value:'98.4 / 150 GB', r: 98.4 / 150 },
+        { label:'หน่วยความจำ (RAM)', value:'5.1 / 8 GB', r: 5.1 / 8 }
+      ].map(c => Object.assign(c, { w: Math.min(100, c.r * 100) + '%', bg: barColor(c.r) })),
+      services: [{ name:'Apache 2.4 (Web Server)' }, { name:'MariaDB (Database)' }, { name:'OpenSSH (SFTP)' }, { name:'Cron ซิงก์โควตา (ทุก 15 นาที)' }],
+      attentionUsers: decorated.filter(u => u.stKey !== 'ok').sort((a, b) => order[a.stKey] - order[b.stKey]),
+      search: s.search, fCourse: s.fCourse, fYear: s.fYear, fStatus: s.fStatus,
+      cols, rows, noRows: rows.length === 0, rowCount: rows.length,
+      hasUserModal: !!muRaw, mu: muRaw || {}, closeModal: () => this.setState({ modal:null }), stop: e => e.stopPropagation(),
+      quotaDraft: s.quotaDraft, quotaInvalid, quotaOpacity: quotaInvalid ? .5 : 1,
+      quotaHint: quotaInvalid ? 'Hard limit ต้องมากกว่าหรือเท่ากับ Soft limit และไม่เกิน 5000 MB' : 'ค่าเริ่มต้น: Soft 500 MB / Hard 550 MB',
+      quotaHintColor: quotaInvalid ? '#b02a37' : '#8a93a3',
+      askQuota: () => !quotaInvalid && this.openConfirm('quota', s.modal),
+      hasConfirm: !!cf, cf: cf || {}, confirmText: s.confirmText, confirmDisabled, confirmOpacity: confirmDisabled ? .5 : 1,
+      closeConfirm: () => this.setState({ confirm:null }),
+      showTerms: s.showTerms, hasToast: !!s.toast, toast: s.toast
+    };
+  }
+}
+</script>
+</body>
+</html>
